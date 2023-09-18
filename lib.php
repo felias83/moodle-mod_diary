@@ -30,8 +30,7 @@ use mod_diary\local\results;
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @param object $diary
- *            Object containing required diary properties.
+ * @param object $diary Object containing required diary properties.
  * @return int Diary ID.
  */
 function diary_add_instance($diary) {
@@ -494,7 +493,7 @@ function diary_reset_userdata($data) {
     // Delete entries if requested.
     if (!empty($data->reset_diary)) {
 
-        $DB->delete_records_select('diary_entries', "dataid IN ($alldatassql)", array($data->courseid));
+        $DB->delete_records_select('diary_entries', "diary IN ($alldatassql)", array($data->courseid));
 
         if ($datas = $DB->get_records_sql($alldatassql, array($data->courseid))) {
             foreach ($datas as $dataid => $unused) {
@@ -515,7 +514,7 @@ function diary_reset_userdata($data) {
 
         if (empty($data->reset_gradebook_grades)) {
             // Remove all grades from gradebook.
-            data_reset_gradebook($data->courseid);
+            diary_reset_gradebook($data->courseid);
         }
 
         $status[] = array(
@@ -582,7 +581,7 @@ function diary_reset_userdata($data) {
 
         if (empty($data->reset_gradebook_grades)) {
             // Remove all grades from gradebook.
-            data_reset_gradebook($data->courseid);
+            diary_reset_gradebook($data->courseid);
         }
 
         $status[] = array('component' => $componentstr, 'item' => get_string('deleteallratings'), 'error' => false);
@@ -603,16 +602,35 @@ function diary_reset_userdata($data) {
         }
         $status[] = array('component' => $componentstr, 'item' => get_string('tagsdeleted', 'data'), 'error' => false);
     }
+
     // Updating dates - shift may be negative too.
     if ($data->timeshift) {
         // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
         // See MDL-9367.
-        shift_course_mod_dates('diary', array('timeavailablefrom', 'timeavailableto',
-            'timeviewfrom', 'timeviewto', 'assesstimestart', 'assesstimefinish'), $data->timeshift, $data->courseid);
+        shift_course_mod_dates('diary', array('timeopen', 'timeclose'), $data->timeshift, $data->courseid);
         $status[] = array('component' => $componentstr, 'item' => get_string('datechanged'), 'error' => false);
     }
 
     return $status;
+}
+
+/**
+ * Returns gradebook data in module.
+ *
+ * @return array
+ */
+function diary_reset_gradebook($courseid, $type = '') {
+    global $DB;
+
+    $sql = "SELECT d.*, cm.idnumber as cmidnumber, d.course as courseid
+              FROM {diary} d, {course_modules} cm, {modules} m
+             WHERE m.name='diary' AND m.id=cm.module AND cm.instance=d.id AND d.course=?";
+
+    if ($diaries = $DB->get_records_sql($sql, [$courseid])) {
+        foreach ($diaries as $diary) {
+            diary_grade_item_update($diary);
+        }
+    }
 }
 
 /**
@@ -640,13 +658,11 @@ function diary_print_overview($courses, &$htmlarray) {
 
     $timenow = time();
     foreach ($diarys as $diary) {
-
         if (empty($courses[$diary->course]->format)) {
             $courses[$diary->course]->format = $DB->get_field('course', 'format', array(
                 'id' => $diary->course
             ));
         }
-
         if ($courses[$diary->course]->format == 'weeks' && $diary->days) {
 
             $coursestartdate = $courses[$diary->course]->startdate;
@@ -661,15 +677,14 @@ function diary_print_overview($courses, &$htmlarray) {
         } else {
             $diaryopen = true;
         }
-
         if ($diaryopen) {
+            // 20230810 Changed based on pull rquest #29.
+            $url = new moodle_url($CFG->wwwroot.'/mod/diary/view.php', array('id' => $diary->coursemodule));
             $str = '<div class="diary overview"><div class="name">'
                 .$strdiary.': <a '
                 .($diary->visible ? '' : ' class="dimmed"')
-                .' href="'.$CFG->wwwroot.'/mod/diary/view.php?id='
-                .$diary->coursemodule.'">'
+                .' href="'.$url->out(false).'">'
                 .$diary->name.'</a></div></div>';
-
             if (empty($htmlarray[$diary->course]['diary'])) {
                 $htmlarray[$diary->course]['diary'] = $str;
             } else {
@@ -796,7 +811,8 @@ function diary_get_users_done($diary, $currentgroup, $sortoption) {
 
     $params = array();
 
-    $sql = "SELECT DISTINCT u.* FROM {diary_entries} de
+    $sql = "SELECT DISTINCT u.*
+              FROM {diary_entries} de
               JOIN {user} u ON de.userid = u.id ";
 
     // Group users.
@@ -840,11 +856,11 @@ function diary_get_users_done($diary, $currentgroup, $sortoption) {
 function diary_get_coursemodule($diaryid) {
     global $DB;
 
-    return $DB->get_record_sql("SELECT cm.id FROM {course_modules} cm
+    return $DB->get_record_sql("SELECT cm.id
+                                  FROM {course_modules} cm
                                   JOIN {modules} m ON m.id = cm.module
-                                 WHERE cm.instance = ? AND m.name = 'diary'", array(
-        $diaryid
-    ));
+                                 WHERE cm.instance = ?
+                                   AND m.name = 'diary'", array($diaryid));
 }
 
 /**

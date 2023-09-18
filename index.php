@@ -18,7 +18,7 @@
  * This page lists all the instances of diary in a particular course
  *
  * @package   mod_diary
- * @copyright 1999 onwards Martin Dougiamas {@link http://moodle.com}
+ * @copyright 2019 AL Rachels (drachels@drachels.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 use mod_diary\local\results;
@@ -26,6 +26,7 @@ require_once(__DIR__ . "/../../config.php");
 require_once("lib.php");
 
 $id = required_param('id', PARAM_INT); // Course.
+$currentgroup = optional_param('currentgroup', 0, PARAM_INT); // Id of the current group(default to zero).
 
 if (!$course = $DB->get_record('course', array('id' => $id))) {
     throw new moodle_exception(get_string('incorrectcourseid', 'diary'));
@@ -111,11 +112,13 @@ foreach ($diarys as $diary) {
         'context' => $context
     ));
     if (! $diary->visible) {
-        // Show dimmed if the mod is hidden.
-        $table->data[$i][] = '<a class="dimmed" href="view.php?id='.$diary->coursemodule.'">'.$diaryname.'</a>';
+        // Show dimmed if the mod is hidden. 20230810 Changed based on pull rquest #29.
+        $url = new moodle_url('view.php', ['id' => $diary->coursemodule]);
+        $table->data[$i][] = '<a class="dimmed" href="'.$url->out(false).'">'.$diaryname.'</a>';
     } else {
-        // Show normal if the mod is visible.
-        $table->data[$i][] = '<a href="view.php?id='.$diary->coursemodule.'">'.$diaryname. '</a>';
+        // Show normal if the mod is visible. 20230810 Changed based on pull rquest #29.
+        $url = new moodle_url('view.php', ['id' => $diary->coursemodule]);
+        $table->data[$i][] = '<a href="'.$url->out(false).'">'.$diaryname. '</a>';
     }
 
     // Description.
@@ -138,12 +141,13 @@ foreach ($diarys as $diary) {
                 }
             }
         }
+        // 20230810 Diary_1066 changed this to use $currentgroup.
+        $entrycount = results::diary_count_entries($diary, $currentgroup);
 
-        $entrycount = results::diary_count_entries($diary, groups_get_all_groups($course->id, $USER->id));
-        // 20220102 Added action to the href.
-        $table->data[$i][] = '<a href="report.php?id='.$diary->coursemodule.'&action=currententry">'
+        // 20220102 Added action to the href. 20230810 Changed based on pull request #29.
+        $url = new moodle_url('report.php', ['id' => $diary->coursemodule, 'action' => 'currententry']);
+        $table->data[$i][] = '<a href="'.$url->out(false).'">'
             .get_string('viewallentries', 'diary', $entrycount).'</a>';
-
     } else if (! empty($managersomewhere)) {
         $table->data[$i][] = "";
     }

@@ -74,6 +74,10 @@ foreach ($diarys as $temp) {
     }
 }
 
+// 20230511 Following two lines are for View, Automatic Completion marking.
+$completion = new completion_info($course);
+$completion->set_module_viewed($cm);
+
 // Need to call a prompt function that returns the current promptid, if there is one that is current.
 $promptid = prompts::get_current_promptid($diary);
 
@@ -236,8 +240,9 @@ if (($diary->intro) && ($CFG->branch < 400)) {
 if (prompts::diary_available($diary)) {
     list($tcount, $past, $current, $future) = prompts::diary_count_prompts($diary);
     if ($current > 1) {
-        $url1 = $CFG->wwwroot . '/mod/diary/prompt_edit.php?id='.$cm->id;
-        echo '</a> <a href="'.$url1
+        // 20230810 Changed via pull request #29.
+        $url1 = new moodle_url($CFG->wwwroot.'/mod/diary/prompt_edit.php', array('id' => $cm->id));
+        echo '</a> <a href="'.$url1->out(true)
             .'" class="btn btn-success" style="border-radius: 8px">'
             .get_string('warning', 'diary', $current)
             .'</a> ';
@@ -261,12 +266,12 @@ if ($entriesmanager) {
     $entrycount = results::diary_count_entries($diary, $currentgroup);
 
     // 20200827 Add link to index.php page right after the report.php link. 20210501 modified to remove div.
+    // 20230810 Added current group to index.php href.
     $temp = '<span class="reportlink"><a href="report.php?id='.$cm->id.'&action=currententry">';
     $temp .= get_string('viewallentries', 'diary', $entrycount).'</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
-    $temp .= '<a href="index.php?id='.$course->id.'">'.get_string('viewalldiaries', 'diary').'</a>';
+    $temp .= '<a href="index.php?id='.$course->id.'&currentgroup='.$currentgroup.'">'.get_string('viewalldiaries', 'diary').'</a>';
     $temp .= '</a></span>';
     echo $temp;
-
 } else {
     // 20200831 Added to show link to only index.php page for students. 20210501 modified to remove div.
     echo '<a class="reportlink" href="index.php?id='.$course->id.'">'.get_string('viewalldiaries', 'diary').'</a>';
