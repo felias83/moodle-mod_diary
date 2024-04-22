@@ -1,6 +1,9 @@
 This files describes API changes and other work in the diary code.
 === Deferred until fixed. ===
 20201006 Diary_627 - Included files are not restored correctly.
+20200601 Diary_526r - Make toggle to allow grade and feedback for users with no entry.
+    Making changes in the results.php file. Currently the code is just, text, based on
+    the diary activity availability.
 20210515 Diary_719 - Media files are NOT there after a restore.
 20210815 Diary_736 - Need a way to slectively turn off autosave. It is not
     needed when starting a totally new entry. Note: Same for tags.
@@ -9,23 +12,99 @@ This files describes API changes and other work in the diary code.
 
 20211130 Diary_779 - Need to work on the help pop up windows for stats. Currently
     set this ticket status to waiting.
-20230419 Diary_1036 - Modify Pormpts to fire up based on resticted access or completion.
+20220228 Diary_824 - The Moodle Mobile app is not supported.
+20230419 Diary_1036 - Diary - Modify Prompts to use Modes to fire up based on resticted
+    access or completion.
 20230501 Diary_1038 - I think define_restore_log_rules for view all and transfer
     in restore_diary_activity_task.class is missing.
+20230831 Diary_1069 - Would be nice if current prompt info was added to the description.
 
-=== 3.7.5 === 20230809 STABLE
-20230511 Diary_1041 - View completion does not seem to be implemented. Added the needed,
+
+=== 3.7.8+ === (Build: 2024020203)
+20240409  Diary_1232v - Wrong column name 'titleson'/'enabletitles' in table mdl_diary #37.
+    Renamed field and saved new version of install.xml. Made code changes in upgrade.php
+    that renames the field if it finds it as titleson so that it becomes enabletitles. 
+
+
+=== 3.7.8 === (Build:2024020202)
+20230523 Diary_1050v - When editing or creating an entry, there are two tag headers. At
+    some time, or another, this seems to have resolved itself, so closing this ticket
+    and marked as being included in this version.
+20231208 Diary_1128v - Need to add a field for prompt background color. Added code and
+    settings to the files, as needed. See ticket for details.
+20240116 Diary_1172v - Prompts are missing from the report.php and reportsingle.php
+    pages. Created new .promptentry, in the style.css file and used in the two report
+    files as needed along with new code in results.php to render in report and reportsingle.
+20240206 Diary_1196v - Toolbar is missing on the reportsingle.php page. Copied the toolbar
+    code from the report.php file over into the reportsingle.php file. I then commented
+    out the sort by ascending and descending last name tool button.
+
+=== 3.7.7 === (Build: 2023111100)
+20220124 Diary_813v - Audio files are being counted as sentences. Only counted if it
+    is the only thing in an entry. If there is any other text that starts with a
+    paragraph tag, line feed tag, or carriage return with new line tag, the sentence
+    count is correct, so the one mode for the error, will not be fixed.
+20230523 Diary_1049v - Seem to be using wrong string source in diary/lib.php in line 604.
+    Created missing string and changed Diary code to use it. System logs now show entries
+    when tags are added, removed, and delted.
+20230609 Diary_1052v - Diary - Request for possible CSS to hide empty entries. This does
+    the same as the next ticket and I prefer the method I used there, so this is done.
+20230609 Diary_1053v - Request to not show empty entries. Added code to create a user
+    preference for each Diary activity that can be set or changed by the teacher.
+20231010 Diary_1093v - Toggle emails to, Email now, does not seem to eliminate the edit
+    time delay for non-editing teachers. Added missing code to edit.php to send emails
+    to course non-editing teachers, which was entirely missing.
+20231108 Diary_1113v - There has been a new capability requested for a title/description
+    for each entry. Now have titles working. Refer to the ticket for details.
+20231109 Diary_1114v - Add further capability to the new title for each Diary and it's
+    entries. All the needed code and strings have been added and the setting works.
+    Refer to the ticket for all the details, as it is a bunch.
+20231110 Diary_1115v - Need to add titles to each report entry. Added the needed code
+    in the classes/local/results.php page in the, function diary_print_user_entry.
+    Putting the code there fixed the views for both the, report and reportsingle, pages.
+20231111 Diary_1116v - Need to add Titles to downloads. Added the needed code, performed
+    a download, and the titles have been added just before the entries, in the CSV
+    download. Do need to investigate using another download format.
+20231111 Diary_1117v - The provider.php file needs to also handle titles. Created two
+    new lines of code at line 70 and line 240, so that titles are included in the
+    metadata and in the export. Request for personal data download works as expected.
+
+
+
+
+=== 3.7.6+ === (Build: 2023092501) (2023092501)
+20231013 Diary_1098v - The journal_to_diary_entries_transfer.php file is missing a closing
+    bracket in line 76. Changed character from ) to ] on line 76 of the file.
+
+=== 3.7.6 === 2023100800 STABLE (Build date: 2023092500)
+20230925 Diary_1075v - Some defaults are missing from the mod_form.php page. Added site
+    defaults for editall and editdates to the mod_form.php file. Pending daysavailable.
+20231002 Diary_1087v - Latest codechecker says "Import statements must not begin with a
+    leading backslash". Made code changes as needed. See ticket for details.
+20231002 Diary_1088v - Latest codechecker requires convert from long array(), to short
+    array []. Made code changes as needed. See ticket for details.
+20231005 Diary_1089v - CSV Download from view.php is generating debug error. Added
+    $PAGE->set_url('/mod/diary/view.php', ['id' => $cm->id]); which seems to fix
+    the problem with the download.
+20231005 Diary_1090v - CSV Download from report.php is generating debug error. Added
+    $PAGE->set_url('/mod/diary/view.php', ['id' => $cm->id]); which seems to fix
+    the problem with the download.
+
+=== 3.7.5 === 2023080900 STABLE
+20230511 Diary_1041v - View completion does not seem to be implemented. Added the needed,
     two lines of code, to the view.php file.
-20230809 Diary - 10 file pull request generated by Catalyst IT Australia. Reviewd all
+20230809 Diary_1064v - 10 file pull request generated by Catalyst IT Australia. Reviewd all
     code changes and completed the merge. Had a problem with the results.php file and
     fixed it by adding, use moodle_url, at the start of the file.
-20230810 Diary_1066 - The index.php file is passing the wrong groupid to results.php
+20230810 Diary_1066v - The index.php file is passing the wrong groupid to results.php
     for diary_count_entries($diary, $groupid = 0). See the ticket for details, but
     I changed the code to pass just the current group ID instead of the whole array.
-20230814 Diary_1067 - Pull request #30 from Herbert Owen of Catalyst IT Australia.
+20230814 Diary_1067v - Pull request #30 from Herbert Owen of Catalyst IT Australia.
     Completed the merge and then tested by making changes to a journal in the test
     course for this. Appears to have worked without any problems.
-
+20230823 Diary_1068v - Pull request #31 and #32 Fix error when resetting courses
+    with mod_diary options turned on. 2023082301 Reviewed the two pull requests
+    and completed the merge.
 
 === 3.7.4 === 20230508 STABLE
 20210819 Diary_748v - Need Diary settings for errorfullmatch, errorcasesensitive,

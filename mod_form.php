@@ -83,13 +83,13 @@ class mod_diary_mod_form extends moodleform_mod {
         $diaryconfig = get_config('mod_diary');
 
         // 20210706 Add Javascript to expand/contract text input fields. NOT sure if this is needed.
-        $params = array();
+        $params = [];
         $PAGE->requires->js_call_amd("$plugin/form", 'init', $params);
 
         // 20210706 Cache options for form elements to input text.
-        $shorttextoptions = array('size' => 3,  'style' => 'width: auto');
-        $mediumtextoptions = array('size' => 5,  'style' => 'width: auto');
-        $longtextoptions = array('size' => 10, 'style' => 'width: auto');
+        $shorttextoptions = ['size' => 3,  'style' => 'width: auto'];
+        $mediumtextoptions = ['size' => 5,  'style' => 'width: auto'];
+        $longtextoptions = ['size' => 10, 'style' => 'width: auto'];
 
         // 20210706 Cache options for show/hide elements.
         // 20220115 NOT in use yet.
@@ -102,9 +102,7 @@ class mod_diary_mod_form extends moodleform_mod {
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
-        $mform->addElement('text', 'name', get_string('diaryname', 'diary'), array(
-            'size' => '64'
-        ));
+        $mform->addElement('text', 'name', get_string('diaryname', 'diary'), ['size' => '64']);
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
@@ -118,7 +116,7 @@ class mod_diary_mod_form extends moodleform_mod {
 
         // 20200915 Moved check so daysavailable is hidden unless using weekly format.
         if ($COURSE->format == 'weeks') {
-            $options = array();
+            $options = [];
             $options[0] = get_string('alwaysopen', 'diary');
             for ($i = 1; $i <= 13; $i ++) {
                 $options[$i] = get_string('numdays', '', $i);
@@ -136,25 +134,37 @@ class mod_diary_mod_form extends moodleform_mod {
             $mform->setDefault('days', '0');
         }
 
-        $mform->addElement('date_time_selector', 'timeopen', get_string('diaryopentime', 'diary'), array(
-            'optional' => true,
-            'step' => 1
-        ));
+        $mform->addElement('date_time_selector', 'timeopen', get_string('diaryopentime', 'diary'),
+            [
+                'optional' => true,
+                'step' => 1,
+            ]
+        );
         $mform->addHelpButton('timeopen', 'diaryopentime', 'diary');
 
-        $mform->addElement('date_time_selector', 'timeclose', get_string('diaryclosetime', 'diary'), array(
-            'optional' => true,
-            'step' => 1
-        ));
+        $mform->addElement('date_time_selector', 'timeclose', get_string('diaryclosetime', 'diary'),
+            [
+                'optional' => true,
+                'step' => 1,
+            ]
+        );
         $mform->addHelpButton('timeclose', 'diaryclosetime', 'diary');
 
-        // 20201015 Added Edit all, enable/disable setting.
-        $mform->addElement('selectyesno', 'editall', get_string('editall', 'diary'));
-        $mform->addHelpButton('editall', 'editall', 'diary');
+        // 20201015 Added Edit all, enable/disable setting. 20230925 Modified to use site default.
+        $name = 'editall';
+        $label = get_string($name, $plugin);
+        $mform->addElement('selectyesno', $name, $label);
+        $mform->addHelpButton($name, $name, $plugin);
+        $mform->setType($name, PARAM_INT);
+        $mform->setDefault($name, $diaryconfig->editall);
 
-        // 20201119 Added Edit dates, enable/disable setting.
-        $mform->addElement('selectyesno', 'editdates', get_string('editdates', 'diary'));
-        $mform->addHelpButton('editdates', 'editdates', 'diary');
+        // 20201119 Added Edit dates, enable/disable setting. 20230925 Modified to use site default.
+        $name = 'editdates';
+        $label = get_string($name, $plugin);
+        $mform->addElement('selectyesno', $name, $label);
+        $mform->addHelpButton($name, $name, $plugin);
+        $mform->setType($name, PARAM_INT);
+        $mform->setDefault($name, $diaryconfig->editdates);
 
         // 20210704 Added heading for appearance options section.
         $name = 'appearancehdr';
@@ -190,6 +200,14 @@ class mod_diary_mod_form extends moodleform_mod {
         $mform->addHelpButton($name, $name, $plugin);
         $mform->setType($name, PARAM_INT);
         $mform->setDefault($name, $diaryconfig->enablestats);
+
+        // 20231109 Added enable/disable setting for titles.
+        $name = 'enabletitles';
+        $label = get_string($name, $plugin);
+        $mform->addElement('selectyesno', $name, $label);
+        $mform->addHelpButton($name, $name, $plugin);
+        $mform->setType($name, PARAM_INT);
+        $mform->setDefault($name, $diaryconfig->enabletitles);
 
         // 20230204 Added enable/disable setting for teacheremail.
         $name = 'teacheremail';
@@ -392,13 +410,13 @@ class mod_diary_mod_form extends moodleform_mod {
     }
 
     /**
-     * Get array of glossary options
+     * Get array of glossary options.
      *
      * @param array $courseid
      * @return array $options
      */
     protected function get_errorcmid_options($courseid=0) {
-        $options = array('0' => '');
+        $options = ['0' => ''];
         $modinfo = get_fast_modinfo($courseid);
         foreach ($modinfo->cms as $cmid => $cm) {
             if ($cm->modname == 'glossary' && $cm->uservisible) {
@@ -429,7 +447,7 @@ class mod_diary_mod_form extends moodleform_mod {
      * Get array of countable item types.
      *
      * @param string $plugin name
-     * @return array(type => description)
+     * @return [type => description]
      */
     protected function get_itemtype_options($plugin) {
         $options['0'] = get_string('none');
@@ -445,33 +463,30 @@ class mod_diary_mod_form extends moodleform_mod {
      * Get array of full match options.
      *
      * @param string $plugin name
-     * @return array(value => description)
+     * @return [value => description]
      */
     protected function diary_get_fullmatch_options($plugin) {
-        return array(0 => get_string('phrasefullmatchno', $plugin),
-                     1 => get_string('phrasefullmatchyes', $plugin));
+        return [0 => get_string('phrasefullmatchno', $plugin), 1 => get_string('phrasefullmatchyes', $plugin)];
     }
 
     /**
      * Get array of case sensitivity options.
      *
      * @param string $plugin name
-     * @return array(value => description)
+     * @return [value => description]
      */
     protected function get_casesensitive_options($plugin) {
-        return array(0 => get_string('phrasecasesensitiveno', $plugin),
-                     1 => get_string('phrasecasesensitiveyes', $plugin));
+        return [0 => get_string('phrasecasesensitiveno', $plugin), 1 => get_string('phrasecasesensitiveyes', $plugin)];
     }
 
     /**
      * Get array of options for ignoring breaks
      *
      * @param string $plugin name
-     * @return array(value => description)
+     * @return [value => description]
      */
     protected function get_ignorebreaks_options($plugin) {
-        return array(0 => get_string('phraseignorebreaksno', $plugin),
-                     1 => get_string('phraseignorebreaksyes', $plugin));
+        return [0 => get_string('phraseignorebreaksno', $plugin), 1 => get_string('phraseignorebreaksyes', $plugin)];
     }
 
 }
@@ -507,9 +522,9 @@ class mod_diary_prompt_form extends moodleform {
         $plugin = 'mod_diary';
         $ratingoptions = diarystats::get_rating_options($plugin);
         // 20220920 Cache options for form elements to input text.
-        $shorttextoptions = array('size' => 3, 'style' => 'width: auto');
-        $mediumtextoptions = array('size' => 5, 'style' => 'width: auto');
-        $longtextoptions = array('size' => 10, 'style' => 'width: auto');
+        $shorttextoptions = ['size' => 3, 'style' => 'width: auto'];
+        $mediumtextoptions = ['size' => 5, 'style' => 'width: auto'];
+        $longtextoptions = ['size' => 10, 'style' => 'width: auto'];
 
         $mform->addElement('date_time_selector', 'datestart', get_string('datestart', 'mod_diary', $promptid));
         $mform->setType('datestart', PARAM_INT);
@@ -525,6 +540,13 @@ class mod_diary_prompt_form extends moodleform {
                            'wrap="virtual" rows="5"');
         $mform->setType('text_editor', PARAM_RAW);
         $mform->addRule('text_editor', null, 'required', null, 'client');
+
+        // Diary prompt background colour setting.
+        $name = 'promptbgc';
+        $label = get_string($name, $plugin);
+        $mform->addElement('text', $name, $label, $ratingoptions);
+        $mform->addHelpButton($name, $name, $plugin);
+        $mform->setType($name, PARAM_NOTAGS);
 
         // 20220923 Added minimum character count setting.
         $name = 'minchar';
@@ -643,9 +665,9 @@ class mod_diary_prompt_edit_form extends moodleform {
         $plugin = 'mod_diary';
         $ratingoptions = diarystats::get_rating_options($plugin);
         // 20220923 Cache options for form elements to input text.
-        $shorttextoptions = array('size' => 3, 'style' => 'width: auto');
-        $mediumtextoptions = array('size' => 5, 'style' => 'width: auto');
-        $longtextoptions = array('size' => 10, 'style' => 'width: auto');
+        $shorttextoptions = ['size' => 3, 'style' => 'width: auto'];
+        $mediumtextoptions = ['size' => 5, 'style' => 'width: auto'];
+        $longtextoptions = ['size' => 10, 'style' => 'width: auto'];
 
         $name = 'datestart';
         $label = get_string($name, $plugin);
@@ -668,6 +690,13 @@ class mod_diary_prompt_edit_form extends moodleform {
                            'wrap="virtual" rows="3"');
         $mform->setType($name, PARAM_RAW);
         $mform->addRule($name, null, 'required', null, 'client');
+
+        // Diary prompt background colour setting.
+        $name = 'promptbgc';
+        $label = get_string($name, $plugin);
+        $mform->addElement('text', $name, $label, $ratingoptions);
+        $mform->addHelpButton($name, $name, $plugin);
+        $mform->setType($name, PARAM_NOTAGS);
 
         // 20220923 Added minimum character count setting.
         $name = 'minchar';

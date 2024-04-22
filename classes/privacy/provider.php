@@ -67,12 +67,13 @@ class provider implements \core_privacy\local\metadata\provider,
                 'userid' => 'privacy:metadata:diary_entries:userid',
                 'timecreated' => 'privacy:metadata:diary_entries:timecreated',
                 'timemodified' => 'privacy:metadata:diary_entries:timemodified',
+                'title' => 'privacy:metadata:diary_entries:title',
                 'text' => 'privacy:metadata:diary_entries:text',
                 'rating' => 'privacy:metadata:diary_entries:rating',
                 'entrycomment' => 'privacy:metadata:diary_entries:entrycomment',
                 'teacher' => 'privacy:metadata:diary_entries:teacher',
                 'timemarked' => 'privacy:metadata:diary_entries:timemarked',
-                'mailed' => 'privacy:metadata:diary_entries:mailed'
+                'mailed' => 'privacy:metadata:diary_entries:mailed',
             ],
             'privacy:metadata:diary_entries'
         );
@@ -111,7 +112,7 @@ class provider implements \core_privacy\local\metadata\provider,
         $params = [
             'modid' => $modid,
             'contextlevel' => CONTEXT_MODULE,
-            'userid' => $userid
+            'userid' => $userid,
         ];
 
         // User-created diary entries.
@@ -153,7 +154,7 @@ class provider implements \core_privacy\local\metadata\provider,
         $params = [
             'modid' => $modid,
             'contextlevel' => CONTEXT_MODULE,
-            'contextid' => $context->id
+            'contextid' => $context->id,
         ];
 
         // Find users with diary entries.
@@ -236,12 +237,13 @@ class provider implements \core_privacy\local\metadata\provider,
                 'prompttext' => strip_tags($diary->prompttext),
                 'timecreated' => $diary->timecreated ? transform::datetime($diary->timecreated) : '',
                 'timemodified' => $diary->timemodified ? transform::datetime($diary->timemodified) : '',
+                'title' => strip_tags($diary->title),
                 'text' => strip_tags($diary->text),
                 'rating' => $diary->rating,
                 'entrycomment' => strip_tags($diary->entrycomment),
                 'teacher' => $diary->teacher,
                 'timemarked' => $diary->timemarked ? transform::datetime($diary->timemarked) : '',
-                'mailed' => $diary->mailed
+                'mailed' => $diary->mailed,
             ];
         }
         $diarys->close();

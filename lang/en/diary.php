@@ -76,8 +76,6 @@ $string['deadline'] = 'Days Open';
 $string['delete'] = 'Delete';
 $string['deleteallratings'] = 'Delete all ratings';
 $string['deletenotenrolled'] = 'Delete entries by users not enrolled';
-
-
 $string['deleteexconfirm'] = 'Confirm you are about to delete writing prompt ID ';
 $string['details'] = 'Details: ';
 $string['detectcommonerror'] = 'Detected at least {$a->one}, {$a->two}. They are: {$a->three}
@@ -103,7 +101,6 @@ diary entry for \'<i>{$a->diary}</i>\'.<br /><br />
 You can see it appended to your <a href="{$a->url}">diary entry</a>.';
 $string['diarymailhtmluser'] = 'has posted a diary entry for \'<i>{$a->diary}</i>\'<br /><br />
 You may view the <a href="{$a->url}">diary entry here</a>.<br /><br />Note: You may need to provide feedback or update the status of the entry in order for the activity to be set to complete.';
-
 $string['diarymailuser'] = 'has posted a diary entry for \'{$a->diary}\'
 
 You may view the entry here:
@@ -114,6 +111,8 @@ Note: You may need to provide feedback or update the status of the entry in orde
 $string['diaryname'] = 'Diary name';
 $string['diaryopentime_help'] = 'If enabled, you can set a date for the diary to be opened for use.';
 $string['diaryopentime'] = 'Open time';
+$string['diarytitle'] = 'Title';
+$string['diarytitle_help'] = 'You can add an optional title/description.';
 $string['editall_help'] = 'When enabled, users can edit any entry.';
 $string['editall'] = 'Edit all entries';
 $string['editdates_help'] = 'When enabled, users can edit the date of any entry.';
@@ -132,6 +131,12 @@ $string['enablestats_descr'] = 'If enabled, the statistics for each entry will b
 $string['enablestats_help'] = 'Enable, or disable, viewing statistics for each entry.';
 $string['enablestats_title'] = 'Enable statistics';
 $string['enablestats'] = 'Enable statistics';
+
+$string['enabletitles_descr'] = 'If enabled, the titles for each entry will be required and shown.';
+$string['enabletitles_help'] = 'Enable, or disable, requiring titles for each entry.';
+$string['enabletitles_title'] = 'Enable titles';
+$string['enabletitles'] = 'Enable titles';
+
 $string['entries'] = 'Entries';
 $string['entry'] = 'Entry';
 $string['entrybgc_colour'] = '#93FC84';
@@ -150,12 +155,8 @@ $string['errorbehavior_help'] = 'These settings refine the matching behavior for
 $string['errorbehavior'] = 'Error matching behavior';
 $string['errorcmid_help'] = 'Choose the Glossary that contains a list of common errors. Each time one of the errors is found in the essay response, the specified penalty will be deducted from the student\'s rating for this entry.';
 $string['errorcmid'] = 'Glossary of errors';
-
 $string['errorfullmatch'] = 'Error matching behavior';
 $string['errorfullmatch_help'] = 'This setting refines the matching behavior for entries in the Glossary of Common Errors.';
-
-
-
 $string['errorpercent_help'] = 'Select the percentage of total rating that should be deducted for each error that is found in the response.';
 $string['errorpercent'] = 'Penalty per error';
 $string['errp'] = ' Err %: ';
@@ -306,7 +307,7 @@ $string['newdiaryentries'] = 'New diary entries';
 $string['nextentry'] = 'Next entry';
 $string['nodeadline'] = 'Always open';
 $string['noentriesmanagers'] = 'There are no teachers';
-$string['noentry'] = 'No entry';
+$string['noentry'] = 'No entry. ';
 $string['noratinggiven'] = 'No rating given';
 $string['notextdetected'] = '<b>No text detected!</b>';
 $string['notopenuntil'] = 'This diary won\'t be open until';
@@ -331,10 +332,8 @@ $string['pluginname'] = 'Diary';
 $string['popoverhelp'] = 'click for info';
 $string['potautoratingerrpen'] = 'Potential Autorating error penalty: {$a->one}% or {$a->two} points off.';
 $string['potcommerrpen'] = 'Potential Common error penalty: {$a->one} * {$a->two} = {$a->three}% or {$a->four} points off.';
-
 $string['phrasefullmatchno'] = 'Match full or partial words.';
 $string['phrasefullmatchyes'] = 'Match full words only.';
-
 $string['present'] = 'Present';
 $string['previousentry'] = 'Previous entry';
 $string['privacy:metadata:diary_entries:diary'] = 'The ID of the Diary activity in which the entry was posted.';
@@ -353,6 +352,8 @@ $string['privacy:metadata:diary_entries:timemodified'] = 'Time the entry was las
 $string['privacy:metadata:diary_entries:userid'] = 'ID of the user.';
 $string['privacy:metadata:diary_entries'] = 'A record of a diary entry.';
 $string['prompt'] = 'Enter your writing prompt';
+$string['promptbgc'] = 'Background color for this prompt';
+$string['promptbgc_help'] = 'This sets the overall background color for this prompt.';
 $string['promptid'] = 'Prompt id';
 $string['promptinfo'] = 'There are {$a->past} past prompts, {$a->current} current prompt, and {$a->future} future prompts for this diary activity.<br>';
 $string['promptmaxc'] = 'Char max';
@@ -367,7 +368,6 @@ $string['promptminmaxcp'] = 'Char %';
 $string['promptminmaxpp'] = 'Para %';
 $string['promptminmaxsp'] = 'Sent %';
 $string['promptminmaxwp'] = 'Word %';
-
 $string['promptremovefailure'] = 'This prompt, ID {$a}, is in use and cannot be removed.';
 $string['promptremovesuccess'] = 'You have successfully removed prompt, ID {$a}.';
 $string['promptstart'] = 'Prompt start';
@@ -380,7 +380,6 @@ $string['rate'] = 'Rate';
 $string['rating'] = 'Rating for this entry';
 $string['reload'] = 'Reload and show from current to oldest diary entry';
 $string['removealldiarytags'] = 'Remove all Diary tags';
-
 $string['removeentries'] = 'Remove all entries';
 $string['removemessages'] = 'Remove all Diary entries';
 $string['reportsingle'] = 'Get all Diary entries for this user.';
@@ -398,6 +397,9 @@ $string['sentences'] = 'Sentences:';
 $string['sentencesperparagraph'] = 'Sentences per paragraph';
 $string['shortwords_help'] = 'Short words are words that have only one syllable. Note that the algorithm for determining the number of syllables yields only approximate results.';
 $string['shortwords'] = 'Unique short words';
+$string['showlistno'] = 'Hide no entry';
+$string['showlistpreference'] = 'Show users without entries';
+$string['showlistyes'] = 'Show no entry';
 $string['shownone'] = 'Show none';
 $string['showoverview'] = 'Show diarys overview on my moodle';
 $string['showrecentactivity'] = 'Show recent activity';
@@ -423,10 +425,11 @@ $string['statshdr'] = 'Text statistics';
 $string['statshide'] = 'Hide statistics';
 $string['statsshow'] = 'Show statistics';
 $string['studentemail'] = 'Send email notifications to students';
-$string['studentemail_help'] = 'Enable or disable the capability to send email notifications to students.';
+$string['studentemail_help'] = 'Enable or disable the capability to immediately send email notifications to students.';
 $string['tablecolumncharacters'] = 'Characters';
 $string['tablecolumnedit'] = 'Edit&nbsp;&nbsp;&nbsp;&nbsp;';
 $string['tablecolumnparagraphs'] = 'Paragraphs';
+$string['tablecolumnpromptsbgc'] = 'Prompt background color';
 $string['tablecolumnprompts'] = 'Prompts';
 $string['tablecolumnsentences'] = 'Sentences';
 $string['tablecolumnstart'] = 'Start';
@@ -437,7 +440,7 @@ $string['tagarea_diary_entries'] = 'Diary entries';
 $string['tcount'] = 'Currently, this diary activity has a total of {$a} writing prompts that belong to it.<br>';
 $string['teacher'] = 'Teacher';
 $string['teacheremail'] = 'Send email notifications to teachers';
-$string['teacheremail_help'] = 'Enable or disable the capability to send email notifications to teachers.';
+$string['teacheremail_help'] = 'Enable or disable the capability to immediately send email notifications to teachers.';
 $string['text_editor'] = 'Prompt text';
 $string['text'] = 'Enter your writing prompt';
 $string['textstatitems_help'] = 'Select any items here that you wish to appear in the text statistics that are shown on a view page, report page, and reportsingle page.';
