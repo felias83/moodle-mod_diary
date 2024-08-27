@@ -74,6 +74,9 @@ $string['daysavailable_help'] = 'If using Weekly format, you can set how many da
 $string['daysavailable'] = 'Days available';
 $string['deadline'] = 'Days Open';
 $string['delete'] = 'Delete';
+$string['deleteentry'] = 'Delete this entry';
+$string['deleteentryconfirm'] = 'Confirm you are about to delete this entry ID ';
+
 $string['deleteallratings'] = 'Delete all ratings';
 $string['deletenotenrolled'] = 'Delete entries by users not enrolled';
 $string['deleteexconfirm'] = 'Confirm you are about to delete writing prompt ID ';
@@ -320,6 +323,7 @@ $string['outof'] = ' out of {$a} entries.';
 $string['overallrating'] = 'Overall rating';
 $string['pagesize'] = 'Entries per page';
 $string['paragraphs'] = 'Paragraphs:';
+
 $string['percentofentryrating'] = '{$a}% of the entry rating.';
 $string['phrasecasesensitiveno'] = 'Match is case-insensitive.';
 $string['phrasecasesensitiveyes'] = 'Match is case-sensitive.';
@@ -345,6 +349,7 @@ $string['privacy:metadata:diary_entries:promptdatestop'] = 'The date the automat
 $string['privacy:metadata:diary_entries:prompttext'] = 'The text of the writing prompt used for auto-rating and feedback.';
 $string['privacy:metadata:diary_entries:rating'] = 'The numerical grade for this diary entry. Can be determined by scales/advancedgradingforms etc., but will always be converted back to a floating point number.';
 $string['privacy:metadata:diary_entries:teacher'] = 'The user ID of the person rating the entry.';
+$string['privacy:metadata:diary_entries:title'] = 'The title or description of this entry.';
 $string['privacy:metadata:diary_entries:text'] = 'The content of this entry.';
 $string['privacy:metadata:diary_entries:timecreated'] = 'Time the entry was created.';
 $string['privacy:metadata:diary_entries:timemarked'] = 'Time the entry was rated.';
@@ -370,6 +375,9 @@ $string['promptminmaxsp'] = 'Sent %';
 $string['promptminmaxwp'] = 'Word %';
 $string['promptremovefailure'] = 'This prompt, ID {$a}, is in use and cannot be removed.';
 $string['promptremovesuccess'] = 'You have successfully removed prompt, ID {$a}.';
+$string['promptsc'] = 'Current';
+$string['promptsf'] = 'Future';
+$string['promptsp'] = 'Past';
 $string['promptstart'] = 'Prompt start';
 $string['promptstitle'] = 'Diary writing prompts';
 $string['promptstop'] = 'Prompt stop';
@@ -470,3 +478,25 @@ $string['writingpromptlable3'] = 'Writing Prompt Editor';
 $string['writingpromptnotused'] = 'The normal diary settings were used for this entry\'s auto-rating percent settings.';
 $string['writingpromptused'] = 'Writing prompt ID: {$a} was used for this entry\'s auto-rating percent settings.';
 $string['xfrresults'] = 'There were {$a->one} entry\'s processed, and {$a->two} of them transferred.';
+
+// Deprecated since Moodle 4.3.
+$string['grade'] = 'Grade';
+$string['itemcount_help'] = 'The minimum number of countable items that must be in the essay text
+    in order to achieve the maximum rating for this entry.
+
+Note, that this value may be rendered ineffective by the rating bands, if any, defined below.';
+$string['itemcount'] = 'Expected number of items';
+$string['itempercent_help'] = 'Select the percentage of total rating that should be deducted for each missing countable item.';
+$string['itempercent'] = 'Penalty per item';
+$string['itemtype_desc'] = 'The type of items in the essay text that will contribute to the auto-rating is,
+    <strong>{$a->one}</strong>, and for full marks you must use, <strong>{$a->two}</strong>, of them.';
+$string['itemtype_descr'] = 'Select the type of items in the essay text that will contribute to the auto-rating.';
+$string['itemtype_help'] = 'Select the type of items in the essay text that will contribute to the auto-rating.';
+$string['itemtype_title'] = 'Type of countable items';
+$string['itemtype'] = 'Type of countable items';
+$string['itemtypefiles'] = 'Files';
+$string['itemtypechars'] = 'Characters';
+$string['itemtypenone'] = 'None';
+$string['itemtypensentences'] = 'Sentences';
+$string['itemtypeparagraphs'] = 'Paragraphs';
+$string['itemtypewords'] = 'Words';
