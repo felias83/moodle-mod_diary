@@ -25,7 +25,7 @@
  */
 
 
-defined('MOODLE_INTERNAL') || die(); // phpcs:ignore
+defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
 
 /**
  * Returns diary entries tagged with a specified tag.

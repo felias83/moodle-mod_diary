@@ -21,7 +21,7 @@
  * @copyright 2019 AL Rachels (drachels@drachels.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die(); // phpcs:ignore
+defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
 use mod_diary\local\results;
 
 /**
@@ -607,7 +607,7 @@ function diary_reset_userdata($data) {
     if ($data->timeshift) {
         // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
         // See MDL-9367.
-        shift_course_mod_dates('diary', ['timeopen', 'timeclose', 'assesstimestart', 'assesstimefinish'], $data->timeshift, $data->courseid);
+        shift_course_mod_dates('diary', ['timeopen', 'timeclose'], $data->timeshift, $data->courseid);
         $status[] = ['component' => $componentstr, 'item' => get_string('datechanged'), 'error' => false];
     }
 

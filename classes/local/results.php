@@ -25,7 +25,7 @@
  */
 namespace mod_diary\local;
 
-defined('MOODLE_INTERNAL') || die(); // phpcs:ignore
+defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
 define('DIARY_EVENT_TYPE_OPEN', 'open');
 define('DIARY_EVENT_TYPE_CLOSE', 'close');
 use mod_diary\local\results;
@@ -912,7 +912,7 @@ class results {
      */
     public static function diary_get_editor_and_attachment_options($course, $context, $diary, $entry, $action, $firstkey) {
         $maxfiles = 99; // Need to add some setting.
-//        $maxbytes = $course->maxbytes; // Need to add some setting.
+        $maxbytes = $course->maxbytes; // Need to add some setting.
 
         // 20210613 Added more custom data to use in edit_form.php to prevent illegal access.
         $editoroptions = [
@@ -922,17 +922,16 @@ class results {
             'enabletitles' => $diary->enabletitles,
             'action' => $action,
             'firstkey' => $firstkey,
-//            'trusttext' => true,
-//            'maxfiles' => $maxfiles,
-//            'maxbytes' => $maxbytes,
+            'trusttext' => true,
+            'maxfiles' => $maxfiles,
+            'maxbytes' => $maxbytes,
             'context' => $context,
-//            'subdirs' => false,
+            'subdirs' => false,
         ];
-
         $attachmentoptions = [
-//            'subdirs' => false,
-//            'maxfiles' => $maxfiles,
-//            'maxbytes' => $maxbytes,
+            'subdirs' => false,
+            'maxfiles' => $maxfiles,
+            'maxbytes' => $maxbytes,
         ];
 
         return [
@@ -1103,6 +1102,7 @@ class results {
         }
     }
 
+
     /**
      * Update diary entries feedback(optionally in a given group).
      * Called from report.php and reportsingle.php.
@@ -1206,31 +1206,5 @@ class results {
 
         }
         echo $OUTPUT->notification(get_string("feedbackupdated", "diary", "$count"), "notifysuccess");
-    }
-
-    /**
-     * Delete current diary entry.
-     * Called from view.php.
-     * @param array $cm
-     * @param array $context
-     * @param array $diary
-     * @param array $data
-     * @param array $entrybyuser
-     * @param array $entrybyentry
-     * @return int count($diarys) Count of diary entries.
-     */
-    //public static function diary_delete_entry($cm, $context, $diary, $data, $entrybyuser, $entrybyentry) {
-    public static function diary_delete_entry($entry) {
-        global $DB, $CFG, $OUTPUT, $USER;
-        print_object('made it to new function');
-        die;
-        $deleteurl = '<a onclick="return confirm(\''
-            .get_string('deleteentryconfirm', 'diary')
-            .$entry->id
-
-            .'>'
-            .'</a>';
-        // $DB->delete_records('diary_entries', ['id' => $entry->id]);
-        return $deleteurl;
     }
 }
